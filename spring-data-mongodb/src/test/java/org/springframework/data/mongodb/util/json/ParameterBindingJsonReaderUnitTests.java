@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.bson.BsonRegularExpression;
 import org.bson.Document;
 import org.bson.codecs.DecoderContext;
 import org.junit.jupiter.api.Test;
@@ -555,6 +556,13 @@ class ParameterBindingJsonReaderUnitTests {
 		String source = "\\\" + new java.lang.Object() + \\\"";
 		Document target = parse("{ arg0 : :#{?0} }", source);
 		assertThat(target.get("arg0")).isEqualTo(source);
+	}
+
+	@Test // GH-5204
+	void escapesQuotedRegionEndInBoundRegexParameter() {
+
+		Document target = parse("{ 'value': /^\\Q?0\\E/ }", "\\E.*");
+		assertThat(target.get("value")).isEqualTo(new BsonRegularExpression("^\\Q\\E\\\\E\\Q.*\\E"));
 	}
 
 	private static Document parse(String json, Object... args) {
