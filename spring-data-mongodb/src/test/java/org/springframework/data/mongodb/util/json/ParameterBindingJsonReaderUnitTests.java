@@ -30,6 +30,8 @@ import java.util.UUID;
 import org.bson.Document;
 import org.bson.codecs.DecoderContext;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.data.spel.EvaluationContextProvider;
 import org.springframework.data.spel.ExpressionDependencies;
 import org.springframework.expression.EvaluationContext;
@@ -529,6 +531,14 @@ class ParameterBindingJsonReaderUnitTests {
 		String source = "new java.lang.Object()";
 		Document target = parse("{ arg0 : :#{'?0'} }", source);
 		assertThat(target.get("arg0")).isEqualTo(source);
+	}
+
+	@ParameterizedTest // GH-5205
+	@ValueSource(strings = { "?0", ":#{?0}" })
+	void errorsOnUnparsableInput(String placeholder) {
+
+		String source = ":#{new org.bson.Document('foo', 'bar')}";
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> parse(placeholder, source));
 	}
 
 	@Test // GH-4089
