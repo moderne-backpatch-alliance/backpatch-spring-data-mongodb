@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 3.4.18.1-backpatch-00002
+release: 3.4.18.1-backpatch-00003
 baseline: v3.4.18+backpatch.baseline
 fixes:
   - cve: CVE-2026-41717
@@ -12,11 +12,16 @@ fixes:
     upstream: https://nvd.nist.gov/vuln/detail/CVE-2026-41729
     artifacts:
       - org.springframework.data:spring-data-rest-webmvc
-    note: New in this release; ported onto 3.4.18; fixed at 3.7.18.1-backpatch-00002 (backpatch-spring-data-rest@03edf5c).
+    note: Carried from 3.4.18.1-backpatch-00002; ported onto 3.4.18; fixed at 3.7.18.1-backpatch-00002 (backpatch-spring-data-rest@03edf5c).
+  - cve: CVE-2026-41716
+    upstream: https://nvd.nist.gov/vuln/detail/CVE-2026-41716
+    artifacts:
+      - org.springframework.data:spring-data-commons
+    note: New in this release; ported onto 3.4.18; fixed at 2.7.18.1-backpatch-00003 (backpatch-spring-data-commons@cbb399a).
 tests:
   commit: 7ee7b5e0c9e80f04f4b04dc156e8021a2570b68b
   command: mvn -B -q -pl spring-data-mongodb -am test -Dtest=ParameterBindingJsonReaderUnitTests -DfailIfNoTests=false -Dsurefire.failIfNoSpecifiedTests=false
   runtime: OpenJDK 1.8.0_372 (Zulu), Apache Maven 3.9.14
   report: spring-data-mongodb-3.4.18.1-backpatch-00001-tests.zip
   result: pass
-  note: unchanged in this release; the regression tests the fix commits touched, 0 test(s) run, 0 failed, at the tested commit
+  note: unchanged in this release; unchanged in this release; the regression tests the fix commits touched, 0 test(s) run, 0 failed, at the tested commit
